@@ -1,8 +1,8 @@
 ---
-title: "A Frontend Survival Guide: CSS Flexbox - #1"
+title: "A Survival Guide: CSS Flexbox - #1"
 datePublished: Tue Mar 14 2023 12:14:27 GMT+0000 (Coordinated Universal Time)
 cuid: clf87tzxw001e09kza1zranr7
-slug: a-frontend-survival-guide-css-flexbox-1
+slug: a-survival-guide-css-flexbox-1
 cover: https://cdn.hashnode.com/res/hashnode/image/upload/v1678795352492/b286222c-0673-483c-9174-7456010cb1a9.png
 tags: flexbox, css3, css, css-flexbox, frontend
 
