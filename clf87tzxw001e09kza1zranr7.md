@@ -14,7 +14,7 @@ This will purely be about what and why CSS flexbox is and what're the most commo
 
 ### What and Why is Flexbox even?
 
-Flexbox is just short for the flexible box module. It provides a clean way to arrange items in a container as either columns or rows. Flexbox is used to create 2D layouts which most of us would need in 99% of cases, for 3D and complex layouts we would need CSS Grid (which we will cover in a later article).
+Flexbox is just short for the flexible box module. It provides a clean way to arrange items in a container as either columns or rows. Flexbox is used to create 1D layouts which most of us would need in 99% of cases, for 2D and complex layouts we would need CSS Grid (which we will cover in a later article).
 
 1. Flexbox was created so that we can give our container the ability to alter its items' height, width, and order to best fill the available space since all of us are on different devices and screen sizes. There are quite a handful of container properties and item properties that work together to prevent CSS overflow or underflow. This makes the core of responsive web development.
     
