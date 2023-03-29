@@ -1,8 +1,8 @@
 ---
-title: "Ethernaut - Walkthrough for Noobs - 12 - Gatekeeper One"
+title: "Ethernaut - Walkthrough for Noobs - 13 - Gatekeeper One"
 datePublished: Tue Mar 28 2023 22:34:00 GMT+0000 (Coordinated Universal Time)
 cuid: clfsu4nwr000e09mg5k3ofps9
-slug: ethernaut-walkthrough-for-noobs-12-gatekeeper-one
+slug: ethernaut-walkthrough-for-noobs-13-gatekeeper-one
 cover: https://cdn.hashnode.com/res/hashnode/image/upload/v1680028896426/73e97479-5e8c-4887-8f5f-25f58c186b05.jpeg
 tags: ethereum, web3, smart-contracts, 2articles1week, ethernaut
 
