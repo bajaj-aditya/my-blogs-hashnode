@@ -50,4 +50,98 @@ return false;
 }
 ```
 
-As you can see from the above code, to clear the level. Our new contract must return 42 and the contract should be atmost 10 opcodes. So the only way to solve this is to
+As you can see from the above code, to clear the level. Our new contract must return 42 and the contract should be at most 10 opcodes. So the only way to solve this is to create a smart contract that only returns `42`.
+
+As we have seen in a previous challenge, there are two types of bytecodes.
+
+1. Creation bytecode: It is responsible for creating and preparing the contract.
+    
+2. Runtime bytecode: It is the code/logic of the contract.
+    
+
+To learn more in-depth about bytecodes and opcodes. [Read this](https://medium.com/@blockchain101/solidity-bytecode-and-opcode-basics-672e9b1a88c2#:~:text=Opcodes%20are%20the%20low%20level,opcodes%20and%20their%20hexadecimal%20values.).
+
+### Analysing Opcodes
+
+Let's figure out, the steps needed to create our runtime and creation bytecode. If you have read the above-linked article, you must know that this is how EVM works.
+
+We have the solidity (high level) ---&gt; opcodes (low-level) ----&gt; bytecode (machine level, hex).
+
+So, we would need to create our runtime bytecode and the creation bytecode. Let's first deal with the runtime bytecode. Look at this [opcode chart](https://github.com/crytic/evm-opcodes) for reference. Also, have a look at the LiFO principle before looking below.
+
+1. We need to push and store the value 42 in the memory.
+    
+    ```solidity
+    //8. Will push 2a(i.e. 42) on stack. 0x60 is bytecode for PUSH1. 
+    0x602a
+    //9. Will push a random memory slot 90 in the stack.
+    0x6090
+    //10. Will store (value p = 0x2a at position v = 0x90) to memory, 0x52 is the bytecode for MSTORE.
+    0x52
+    ```
+    
+2. Now, we need the contract to return this stored value (i.e. 42)
+    
+    ```solidity
+    //11. 0x60 is for PUSH1 and `20` computes the 32 bytes hash which is essentially the size of v in stack. 
+    0x6020
+    //12. Value was stored in the 0x90 slot. 
+    0x6090
+    //13. Returns value at the slot 0x90 (42) which is of size 32 bytes. 
+    0xf3
+    ```
+    
+
+Hence, our final runtime bytecode will be: `0x602a60905260206090f3`
+
+After that, let's have a look at the creation bytecode, this would be responsible for loading our runtime opcodes in memory and returning it to the EVM.
+
+`COPYCODE` opcode is used to copy the runtime opcode. It takes in three parameters.
+
+* The destination position, we will keep this as `0x00` it's the first position in memory.
+    
+* Current position of runtime code, we do not know this yet.
+    
+* Size of the runtime code. `0x602a60905260206090f3` which is 10 bytes.
+    
+
+1. ```solidity
+    //1. Pushes the size of opcode which is 10 bytes (0a)
+    0x600a
+    //2. pushes the position of runtime code, but it is not known yet. 
+    0x60--
+    //3. pushes the desitnation position in memory at 0x00
+    0x6000
+    //4. Calls the copy code with all arguments
+    0x39
+    //Now we need to `return` this via 0xf3, which requires position and size, so let's do this.
+    //5. Pushes the size of opcode which is 10 bytes (0a)
+    0x600a
+    //6. Pushes the desitnation position in memory at 0x00
+    0x6000
+    //7.Returns value at the slot 0x00 which is of size 10 bytes. 
+    0xf3
+    ```
+    
+
+Hence the initialization opcode is `0x600a60--600039600a6000f3`.
+
+As we can see this is 12 bytes long, hence runtime opcode starts at index 12 which is `0x0c`. Thus the initialisation opcode is: `0x600a600c600039600a6000f3`
+
+Thus, the final bytecode will be, creation + runtime. `0x600a600c600039600a6000f3602a60905260206090f3`
+
+### Solution
+
+1. Create a new level instance and fire-up the console.
+    
+2. ```javascript
+    final_bytecode = '0x600a600c600039600a6000f3602a60905260206090f3' //we made this final bytecode. 
+    txn = await web3.eth.sendTransaction({from: player, data: bytecode}) //sends this bytecode as transaction. 
+    solverAddress = txn.contractAddress //saves its address.
+    await contract.setSolver(solverAddress) //passes that address from the level instance. 
+    ```
+    
+3. Submit Instance.
+    
+
+Magic Number🪄
